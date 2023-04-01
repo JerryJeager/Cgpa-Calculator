@@ -9,6 +9,12 @@ public class CgpaCalculator {
         }
     }
 
+    static double getGpa(double firstSemester, double secondSemester, int year) {
+        double sessionGpa = (firstSemester + secondSemester) / (double) 2;
+        System.out.printf("\n\nYour GPA for your year %d is %.2f", year, sessionGpa);
+        return sessionGpa;
+    }
+
     static int getScore(char grade, int unitLoad) {
         int score = 0;
         switch (grade) {
@@ -42,24 +48,25 @@ public class CgpaCalculator {
         return score;
     }
 
-    static void getSemesterGpa(String semester) {
+    static double getSemesterGpa(String semester) {
         Scanner yourInput = new Scanner(System.in);
         int courses, unitLoad, courseScore, totalCourseScore = 0, totalUnitLoad = 0;
         char grade;
         double gpa = 0.0;
         String courseName = "";
         System.out.printf("\n\n%s Semester\n", semester);
-        System.out.println("How many courses did you offer this semester?(it should be a digit number): ");
+        System.out.print("How many courses did you offer this semester?(it should be a digit number): ");
         courses = yourInput.nextInt();
 
         for (int i = 0; i < courses; i++) {
+            yourInput.nextLine();
             System.out.print("name of course: ");
             courseName = yourInput.nextLine();
-            System.out.println();
-            System.out.print("how many unit load is the course: ");
+            System.out.print("how many unit load is the course?(it should be a digit number): ");
             unitLoad = yourInput.nextInt();
             System.out.print("What grade did you get?(should be single alphabet character): ");
             grade = yourInput.next().charAt(0);
+            System.out.println();
             courseScore = getScore(grade, unitLoad);
 
             totalUnitLoad = totalUnitLoad + unitLoad;
@@ -69,21 +76,25 @@ public class CgpaCalculator {
         gpa = (double) totalCourseScore / (double) totalUnitLoad;
         // gpa = (Math.round(gpa * 100.0) / 100.0);
         System.out.printf("\nYour Gpa for %s semester is %.2f", semester, gpa);
-
-        yourInput.close();
+        return gpa;
 
     }
 
-    static void getGpa(int years, String name) {
+    static void getCgpa(int years, String name) {
+        double cgpa, totalGpa = 0;
         System.out.printf(
                 "\nHello %s, you are studying a %d years course\nwe need to get your GPA for each year before getting your CGPA\n",
                 name, years);
         line(45);
         for (int i = 0; i < years; i++) {
-            System.out.printf("\nCalculating gpa for your year %d...", i + 1);
-            getSemesterGpa("first");
-            getSemesterGpa("second");
+            System.out.printf("\n\nCalculating gpa for your year %d...", i + 1);
+            double firstSemesterGpa, secondSemesterGpa;
+            firstSemesterGpa = getSemesterGpa("first");
+            secondSemesterGpa = getSemesterGpa("second");
+            totalGpa = totalGpa + getGpa(firstSemesterGpa, secondSemesterGpa, (i + 1));
         }
+        cgpa = totalGpa / years;
+        System.out.printf("\n\n Dear %s, Your CGPA is %.2f", name, cgpa);
     }
 
     public static void main(String[] args) {
@@ -108,7 +119,7 @@ public class CgpaCalculator {
         System.out.print("How many years is your course(it should be a digit number): ");
         years = yourInput.nextInt();
 
-        getGpa(years, name);
+        getCgpa(years, name);
 
         yourInput.close();
 
