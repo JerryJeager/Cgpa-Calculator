@@ -9,9 +9,24 @@ public class CgpaCalculator {
         }
     }
 
+    static void getCgpaClass(double gpa) {
+        if (gpa > 4.49)
+            System.out.println(" [1st Class Honours]");
+        else if (gpa <= 4.49 && gpa >= 3.50)
+            System.out.println(" [2nd Class Honours (Upper)]");
+        else if (gpa <= 3.49 && gpa >= 2.40)
+            System.out.println(" [2nd Class Honours (Lower)]");
+        else if (gpa <= 2.39 && gpa >= 1.50)
+            System.out.println(" [3rd Class Honours]");
+        else if (gpa <= 1.49 && gpa >= 1.00)
+            System.out.println(" [Pass]");
+        else
+            System.out.println(" [Fail]");
+    }
+
     static double getGpa(double firstSemester, double secondSemester, int year) {
         double sessionGpa = (firstSemester + secondSemester) / (double) 2;
-        System.out.printf("\n\nYour GPA for your year %d is %.2f", year, sessionGpa);
+        System.out.printf("\n\nYour GPA for your year %d is %.2f\n", year, sessionGpa);
         return sessionGpa;
     }
 
@@ -85,7 +100,9 @@ public class CgpaCalculator {
         System.out.printf(
                 "\nHello %s, you are studying a %d years course\nwe need to get your GPA for each year before getting your CGPA\n",
                 name, years);
+
         line(45);
+
         for (int i = 0; i < years; i++) {
             System.out.printf("\n\nCalculating gpa for your year %d...", i + 1);
             double firstSemesterGpa, secondSemesterGpa;
@@ -94,21 +111,26 @@ public class CgpaCalculator {
             totalGpa = totalGpa + getGpa(firstSemesterGpa, secondSemesterGpa, (i + 1));
         }
         cgpa = totalGpa / years;
-        System.out.printf("\n\n Dear %s, Your CGPA is %.2f", name, cgpa);
+
+        line(35);
+
+        System.out.printf("\n\n Dear %s, Your CGPA is %.2f\n", name, cgpa);
+        getCgpaClass(cgpa);
+
+        System.out.printf("Congratulations! \\{^_^}/\n");
+
+        line(35);
     }
 
     public static void main(String[] args) {
-        // test = (Math.round(test * 100.0) / 100.0);
         Scanner yourInput = new Scanner(System.in);
 
-        boolean isYearsConfirmed = false;
         int years;
-        char grade;
-        grade = 'a';
         String name, regNo, department;
         System.out.printf("\n\t\t\t\t\tHello there! Welcome to Jerry's Cgpa Calculator.\n");
 
         line(62);
+
         System.out.println();
         System.out.print("What is your name: ");
         name = yourInput.nextLine();
